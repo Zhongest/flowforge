@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+/* ─── FlowForge 设计令牌(深色优先)─── */
+@theme {
+  --color-bg-base: #0a0b0e;
+  --color-bg-surface: #111317;
+  --color-bg-raised: #1a1d23;
+  --color-bg-hover: #22262e;
+
+  --color-line-soft: rgba(255, 255, 255, 0.06);
+  --color-line: rgba(255, 255, 255, 0.1);
+  --color-line-strong: rgba(255, 255, 255, 0.16);
+
+  --color-ink: #e8eaee;
+  --color-ink-mute: #9aa1ad;
+  --color-ink-faint: #5c6370;
+
+  --color-accent: #5b8def;
+  --color-success: #3fb68b;
+  --color-warn: #e5a445;
+  --color-danger: #e5484d;
+  --color-violet: #9a7bf0;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-ctl: 6px;
+  --radius-card: 10px;
+  --radius-modal: 14px;
+
+  --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+html { color-scheme: dark; }
+body { background: var(--color-bg-base); color: var(--color-ink); }
+
+/* 画布点阵网格 */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* 运行节点脉冲 */
+@keyframes node-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(91, 141, 239, 0.45); }
+  50% { box-shadow: 0 0 0 8px rgba(91, 141, 239, 0); }
+}
+.node-active { animation: node-pulse 2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ─── @xyflow/react 深色主题覆盖 ─── */
+.react-flow__handle.ff-handle {
+  width: 11px; height: 11px;
+  background: var(--color-bg-raised);
+  border: 2px solid var(--color-line-strong);
+  transition: background .12s, border-color .12s, box-shadow .12s;
+}
+.react-flow__handle.ff-handle:hover,
+.react-flow__handle-connecting.ff-handle {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px rgba(91,141,239,0.2);
+}
+.react-flow__node { font-family: var(--font-sans); }
+.react-flow__node:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+.react-flow__edge-path { transition: stroke .12s; }
+.react-flow__connection-path { stroke: var(--color-accent); stroke-width: 1.5; stroke-dasharray: 6 4; }
+
+.ff-controls { box-shadow: var(--shadow-raised); }
+.ff-controls button {
+  background: var(--color-bg-surface); border-bottom: 1px solid var(--color-line-soft);
+  color: var(--color-ink-mute); width: 26px; height: 26px;
+}
+.ff-controls button:hover { background: var(--color-bg-hover); color: var(--color-ink); }
+.ff-controls path { fill: currentColor; }
+
+/* 运行实例节点高亮(Phase 3 追踪视图复用) */
+.react-flow__node.is-active > div { animation: node-pulse 2s ease-in-out infinite; }
